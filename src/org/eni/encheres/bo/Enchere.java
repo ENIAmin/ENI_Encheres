@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 public class Enchere {
 	private LocalDateTime dateEnchere;
-	private float montantenchere;
+	private int montantEnchere;
 	
-	public Enchere(LocalDateTime dateEnchere, float montantenchere) {
+	public Enchere(LocalDateTime dateEnchere, int montantEnchere) {
 		super();
 		this.dateEnchere = dateEnchere;
-		this.montantenchere = montantenchere;
+		this.montantEnchere = montantEnchere;
 	}
 
 	public LocalDateTime getDateEnchere() {
@@ -20,12 +20,12 @@ public class Enchere {
 		this.dateEnchere = dateEnchere;
 	}
 
-	public float getMontantenchere() {
-		return montantenchere;
+	public int getMontantEnchere() {
+		return montantEnchere;
 	}
 
-	public void setMontantenchere(float montantenchere) {
-		this.montantenchere = montantenchere;
+	public void setMontantEnchere(int montantEnchere) {
+		this.montantEnchere = montantEnchere;
 	}
 	
 }

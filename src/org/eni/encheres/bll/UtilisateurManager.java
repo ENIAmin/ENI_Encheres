@@ -1,13 +1,15 @@
 package org.eni.encheres.bll;
 
+import java.util.List;
+
 import org.eni.encheres.bo.Utilisateur;
 import org.eni.encheres.dal.DALException;
-import org.eni.encheres.dal.DAO;
 import org.eni.encheres.dal.DAOFactory;
+import org.eni.encheres.dal.UtilisateurDAO;
 
 
 public class UtilisateurManager {
-	private DAO<Utilisateur> utilisateurDAO;
+	private UtilisateurDAO utilisateurDAO;
 	private static UtilisateurManager instance;
 	
 	public UtilisateurManager() throws BLLException{
@@ -44,7 +46,7 @@ public class UtilisateurManager {
             validerUtilisateur(utilisateur);
             utilisateurDAO.update(utilisateur);
         } catch (DALException exc) {
-            throw new BLLException("Erreur lors de l'ajout d'un nouvel utilisateur", exc);
+            throw new BLLException("Erreur lors de la mise à jour d'un utilisateur", exc);
         }
 	}
 	
@@ -53,6 +55,30 @@ public class UtilisateurManager {
             return utilisateurDAO.selectByID(index);
         } catch (DALException exc) {
             throw new BLLException("Erreur lors de la récupération de l'utilisateur par identifiant", exc);
+        }
+	}
+	
+	public List<Utilisateur> getAllUtilisateurs() throws BLLException{
+		try {
+            return utilisateurDAO.selectAll();
+        } catch (DALException exc) {
+            throw new BLLException("Erreur lors de la récupération de tous les utilisateurs", exc);
+        }
+	}
+	
+	public Utilisateur getUtilisateurByLogin(String login, String motDePasse) throws BLLException{
+		try {
+            return utilisateurDAO.selectByLogin(login, motDePasse);
+        } catch (DALException exc) {
+            throw new BLLException("Erreur lors de la récupération de l'utilisateur par le login/mot de passe", exc);
+        }
+	}
+	
+	public Utilisateur getUtilisateurByPseudo(String pseudo) throws BLLException{
+		try {
+            return utilisateurDAO.selectByPseudo(pseudo);
+        } catch (DALException exc) {
+            throw new BLLException("Erreur lors de la récupération de l'utilisateur par le pseudo", exc);
         }
 	}
 	
