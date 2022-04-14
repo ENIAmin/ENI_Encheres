@@ -1,6 +1,8 @@
 package org.eni.encheres.dal;
 
-public interface UtilisateurDAO extends DAO{
+import org.eni.encheres.bo.Utilisateur;
+
+public interface UtilisateurDAO extends DAO<Utilisateur>{
 
 	
 

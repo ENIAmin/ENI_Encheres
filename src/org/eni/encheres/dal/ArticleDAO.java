@@ -1,9 +1,13 @@
 package org.eni.encheres.dal;
 
-public interface ArticleDAO extends DAO{
+import java.util.List;
+
+import org.eni.encheres.bo.Article;
+
+public interface ArticleDAO extends DAO<Article>{
 	
-	public void selectByCategorie(int id) throws DALException;
-	public void selectByMotsClefs(int id) throws DALException;
-	public void selectByStatus(int id) throws DALException;
+	public List<Article> selectByCategorie(int id) throws DALException;
+	public List<Article> selectByMotsClefs(int id) throws DALException;
+	public List<Article> selectByStatus(int id) throws DALException;
 	
 }
