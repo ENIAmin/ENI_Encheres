@@ -160,7 +160,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 	@Override
 	public void update(Utilisateur utilisateur) throws DALException {
-		// TODO Auto-generated method stub
+
+					
+							
 		
 	}
 
@@ -172,8 +174,10 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 		try {
 			connection = JDBCTools.getConnection();
-			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEUR WHERE no_utilisateur=?");
-			// pstmt.setInt(1, id);
+			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEUR WHERE (pseudo = ? OR email = ?) AND mot_de_passe = ?");
+			pstmt.setString(1, login);
+			pstmt.setString(2, login);
+			pstmt.setString(3, motDePasse);
 			
 			ResultSet rs = pstmt.executeQuery();
 			
@@ -197,4 +201,36 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 		
 		return utilisateur;
 }
+
+	@Override
+	public Utilisateur selectByPseudo(String pseudo) throws DALException {
+		Utilisateur utilisateur = null;
+
+		try {
+			connection = JDBCTools.getConnection();
+			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEUR WHERE pseudo = ?");
+			pstmt.setString(1, pseudo);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
+			
+			
+		} catch (SQLException e) {
+			throw new DALException("Erreur lors de la selection d'un utilisateur", e);
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close(); 
+				}
+				if(connection != null) { 
+					connection.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+	}
+		
+		return utilisateur;
+	}
 }
