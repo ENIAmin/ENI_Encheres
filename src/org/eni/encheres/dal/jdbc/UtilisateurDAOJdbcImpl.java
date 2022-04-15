@@ -187,7 +187,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 				if(pstmt != null) {
 					pstmt.close();
 				}
-				if(connection != null) {
+				if(connection != null) { 
 					connection.close();
 				}
 			}catch(SQLException e){
