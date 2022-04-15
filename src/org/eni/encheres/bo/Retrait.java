@@ -4,12 +4,22 @@ public class Retrait {
 	private String rue;
 	private String codePostal;
 	private String ville;
+	private int noArticle;
 	
-	public Retrait(String rue, String codePostal, String ville) {
+	public Retrait(String rue, String codePostal, String ville, int noArticle) {
 		super();
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
+		this.noArticle = noArticle;
+	}
+
+	public int getNoArticle() {
+		return noArticle;
+	}
+
+	public void setNoArticle(int noArticle) {
+		this.noArticle = noArticle;
 	}
 
 	public String getRue() {

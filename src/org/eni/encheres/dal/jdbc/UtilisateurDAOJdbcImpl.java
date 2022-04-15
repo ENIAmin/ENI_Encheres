@@ -18,13 +18,13 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 	@Override
 	
-	//---------Insértion des données de l'utilisateur dans la base de données
+	//---------Insï¿½rtion des donnï¿½es de l'utilisateur dans la base de donnï¿½es
 	
 	public void insert(Utilisateur utilisateur) throws DALException {
 		try {
 			connection = JDBCTools.getConnection();
 			
-			pstmt = connection.prepareStatement("INSERT INTO UTILISATEURS (pseudo,nom,prénom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = connection.prepareStatement("INSERT INTO UTILISATEURS (pseudo,nom,prï¿½nom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, utilisateur.getPseudo());
 			pstmt.setString(2, utilisateur.getNom());
 			pstmt.setString(3, utilisateur.getPrenom());
@@ -44,7 +44,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			pstmt.close();
 			
 		} catch (SQLException e) {
-			throw new DALException("Erreur lors de l'insertion d'une liste", e);
+			throw new DALException("Erreur lors de l'insertion d'un utilisateur", e);
 		}finally {
 			try {
 				if(pstmt != null) {
@@ -109,7 +109,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			}
 			
 		}catch (SQLException e){
-			throw new DALException("Erreur lors de la sélection des utilisateurs", e);
+			throw new DALException("Erreur lors de la sï¿½lection des utilisateurs", e);
 		}finally {
 			try {
 				if(pstmt != null) {
