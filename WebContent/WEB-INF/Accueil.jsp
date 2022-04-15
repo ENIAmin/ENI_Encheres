@@ -3,10 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>ENI-Enchères</title>
+	<meta charset="ISO-8859-1">
+	<title>ENI-Enchères</title>
 </head>
 <body>
+	<h1>ENI-Enchères</h1>
+
 
 </body>
 </html>
