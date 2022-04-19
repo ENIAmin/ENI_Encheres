@@ -30,7 +30,7 @@ public class Accueil extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: TEST TEST").append(request.getContextPath());
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
-        requestDispatcher.forward(request, response);
+        requestDispatcher.forward(request, response); 
 	}
 
 	/**
