@@ -230,4 +230,37 @@ public class EnchereDAOJdbcImpl implements EnchereDAO{
 		}
 		
 	}
+
+	@Override
+	public Enchere selectByArticle(int id) throws DALException {
+		
+		Enchere enchere = null;
+		
+		try {
+			connection = JDBCTools.getConnection();
+			
+			pstmt = connection.prepareStatement("SELECT * FROM ENCHERES WHERE no_article = ?");
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				enchere = new Enchere(rs.getInt("no_utilisateur"), rs.getInt("no_article"), rs.getTimestamp("date_enchere").toLocalDateTime(), rs.getInt("montant_enchere"));
+			}
+			
+		}catch (SQLException e){
+			throw new DALException("Erreur lors de la sélection de l'enchère", e);
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(connection != null) {
+					connection.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+	}
+		return enchere;
+	}
 }

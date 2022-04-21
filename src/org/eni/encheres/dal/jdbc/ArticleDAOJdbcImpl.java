@@ -1,6 +1,7 @@
 package org.eni.encheres.dal.jdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,8 +25,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO{
 			pstmt = connection.prepareStatement("INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, article.getNomArticle());
 			pstmt.setString(2, article.getDescription());
-			pstmt.setDate(3, article.getDateDebutEncheres());
-			pstmt.setDate(4, article.getDateFinEncheres());
+			pstmt.setDate(3, (Date) article.getDateDebutEncheres());
+			pstmt.setDate(4, (Date) article.getDateFinEncheres());
 			pstmt.setInt(5, article.getMiseAPrix());
 			pstmt.setInt(6, article.getNoUtilisateur());
 			pstmt.setInt(7, article.getNoCategorie());

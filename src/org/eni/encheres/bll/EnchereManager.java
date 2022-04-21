@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.eni.encheres.bo.Enchere;
 import org.eni.encheres.dal.DALException;
-import org.eni.encheres.dal.DAO;
 import org.eni.encheres.dal.DAOFactory;
+import org.eni.encheres.dal.EnchereDAO;
 
 public class EnchereManager {
-	private DAO<Enchere> enchereDAO;
+	private EnchereDAO enchereDAO;
 	private static EnchereManager instance;
 	
 	public EnchereManager() throws BLLException{
@@ -62,6 +62,14 @@ public class EnchereManager {
             return enchereDAO.selectAll();
         } catch (DALException exc) {
             throw new BLLException("Erreur lors de la récupération des enchères", exc);
+        }
+	}
+	
+	public Enchere getEnchereByArticle(int id) throws BLLException{
+		try {
+            return enchereDAO.selectByArticle(id);
+        } catch (DALException exc) {
+            throw new BLLException("Erreur lors de la récupération de l'enchère", exc);
         }
 	}
 	
