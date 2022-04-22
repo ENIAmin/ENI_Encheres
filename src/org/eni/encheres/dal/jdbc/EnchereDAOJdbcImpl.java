@@ -209,7 +209,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO{
 	public void delete(int id) throws DALException {
 		try {
 			connection = JDBCTools.getConnection();
-			String articleDelete = "DELETE * FROM ENCHERE WHERE no_article= ?";
+			String articleDelete = "DELETE * FROM ENCHERES WHERE no_article= ?";
 			pstmt = connection.prepareStatement(articleDelete);
 			pstmt.setInt(1, id);
 			

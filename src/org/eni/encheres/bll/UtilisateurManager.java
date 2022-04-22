@@ -33,6 +33,14 @@ public class UtilisateurManager {
         }
 	}
 	
+	public void updateCredit(int id, int montant) throws BLLException{
+		try {
+            utilisateurDAO.updateCredit(id, montant);
+        } catch (DALException exc) {
+            throw new BLLException("Erreur lors de la mise à jour du crédit d'un utilisateur", exc);
+        }
+	}
+	
 	public void removeUtilisateur(int index) throws BLLException{
 		try {
 			utilisateurDAO.delete(index);

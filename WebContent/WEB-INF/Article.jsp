@@ -29,7 +29,7 @@ Meilleure offre: <% if(enchere != null) {%><%= enchere.getMontantEnchere()%> pts
 Mise à prix: <%= article.getMiseAPrix() %> points</br>
 Fin de l'enchère: <%= article.getDateFinEncheres() %></br>
 Retrait: <%= retrait.getRue()%> <%= retrait.getCodePostal()%> <%=retrait.getVille() %></br>
-Vendeur: <%= vendeur.getPseudo() %></br>
+Vendeur: <a href="<%=request.getContextPath()%>/Profil?pseudo=<%=vendeur.getPseudo()%>"><%= vendeur.getPseudo() %></a></br>
 </div>
 <form action="<%=request.getContextPath()%>/Enchere" method="POST">
 <input type="hidden" id="articleId" name="articleId" value="<%= article.getNoArticle()%>">
@@ -40,7 +40,9 @@ Ma proposition: <select id="montant" name="montant"><%if(enchere!= null){for(int
 			%><option value="<%=i%>"><%=i%></option>
 			<%}
 	}%></select>
+<%if(session.getAttribute("pseudo") != null){ %>
 <input type="submit" value="Enchérir">
+<%} %>
 </form>
 
 <a href="<%=request.getContextPath()%>/Accueil"><input type="button" value="Retour"/></a>

@@ -13,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import org.eni.encheres.bll.ArticleManager;
 import org.eni.encheres.bll.BLLException;
+import org.eni.encheres.bll.CategorieManager;
 import org.eni.encheres.bo.Article;
+import org.eni.encheres.bo.Categorie;
 
 /**
  * Servlet implementation class Accueil
@@ -27,14 +29,19 @@ public class Accueil extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ArticleManager articleManager;
+		CategorieManager categorieManager;
 		HttpSession session = request.getSession();
 		String pseudo = (String) session.getAttribute("pseudo");
 		System.out.println(pseudo);
 		try {
+			categorieManager = new CategorieManager();
 			articleManager = new ArticleManager();
+			List<Categorie> listeCategories = new ArrayList<>();
 			List<Article> listeArticles = new ArrayList<>();
 			listeArticles = articleManager.getAllArticles();
+			listeCategories = categorieManager.getAllCategories();
 			request.setAttribute("listeArticles", listeArticles);
+			request.setAttribute("listeCategories", listeCategories);
 			request.getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
 		} catch (BLLException e){
 			e.printStackTrace();

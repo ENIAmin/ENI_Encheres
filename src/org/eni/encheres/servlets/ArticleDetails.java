@@ -47,8 +47,14 @@ public class ArticleDetails extends HttpServlet {
 			Enchere enchere;
 			Utilisateur acheteur, vendeur;
 			Retrait retrait;
-			System.out.println("id" + Integer.parseInt(request.getParameter("articleID")));
-			article = articleManager.getArticle(Integer.parseInt(request.getParameter("articleID")));
+			int id = 0;
+			if(request.getParameter("articleID") != null) {
+				id = Integer.parseInt(request.getParameter("articleID"));
+			} else if(request.getAttribute("articleID") != null){
+				id =  (int) request.getAttribute("articleID");
+			}
+			System.out.println(id);
+			article = articleManager.getArticle(id);
 			categorie = categorieManager.getCategorie(article.getNoCategorie());
 			enchere = enchereManager.getEnchereByArticle(article.getNoArticle());
 			if(enchere != null) {

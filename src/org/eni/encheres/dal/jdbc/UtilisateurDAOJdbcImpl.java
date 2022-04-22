@@ -24,7 +24,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 		try {
 			connection = JDBCTools.getConnection();
 			
-			pstmt = connection.prepareStatement("INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = connection.prepareStatement("INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, utilisateur.getPseudo());
 			pstmt.setString(2, utilisateur.getNom());
 			pstmt.setString(3, utilisateur.getPrenom());
@@ -34,8 +34,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			pstmt.setString(7, utilisateur.getCodePostal());
 			pstmt.setString(8, utilisateur.getVille());
 			pstmt.setString(9, utilisateur.getMotDePasse());
-			pstmt.setInt(10, utilisateur.getCredit());
-			pstmt.setBoolean(11, utilisateur.getAdministrateur());
+			pstmt.setInt(10, 1000);
+			pstmt.setBoolean(11, false);
 			int rows = pstmt.executeUpdate();
             if (rows != 0) {
                 ResultSet resultSet = pstmt.getGeneratedKeys();
@@ -70,6 +70,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			String userDelete = "DELETE * FROM UTILISATEURS WHERE no_utilisateur=?";
 			pstmt = connection.prepareStatement(userDelete);
 			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
 			
 			
 		} catch (SQLException e) {
@@ -135,7 +136,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEURS WHERE no_utilisateur=?");
 			pstmt.setInt(1, id);
 			
-			ResultSet rs = pstmt.executeQuery();while(rs.next()) {
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
 				utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
 			}
 		} catch (SQLException e) {
@@ -178,9 +180,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			pstmt.setString(3, motDePasse);
 			
 			ResultSet rs = pstmt.executeQuery();
-			
-			utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
-			
+			while(rs.next()) {
+				utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
+			}
 			
 		} catch (SQLException e) {
 			throw new DALException("Erreur lors de la selection d'un utilisateur", e);
@@ -210,9 +212,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			pstmt.setString(1, pseudo);
 			
 			ResultSet rs = pstmt.executeQuery();
-			
-			utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
-			
+			while(rs.next()) {
+				utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
+			}
 			
 		} catch (SQLException e) {
 			throw new DALException("Erreur lors de la selection d'un utilisateur", e);
@@ -230,5 +232,32 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 	}
 		
 		return utilisateur;
+	}
+
+	@Override
+	public void updateCredit(int id, int montant) throws DALException {
+		System.out.println("id " + id + "montant " + montant);
+		try {
+			connection = JDBCTools.getConnection();
+			pstmt = connection.prepareStatement("UPDATE UTILISATEURS SET credit=? WHERE no_utilisateur=?");
+			pstmt.setInt(1, montant);
+			pstmt.setInt(2, id);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DALException("Erreur lors de la msie à jour du crédit d'un utilisateur", e);
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close(); 
+				}
+				if(connection != null) { 
+					connection.close();
+				}
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+	}
+		
 	}
 }

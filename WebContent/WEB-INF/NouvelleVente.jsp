@@ -33,7 +33,7 @@ Utilisateur utilisateur = (Utilisateur) request.getAttribute("utilisateur");
 <input id="debutEnchere" name="debutEnchere" type="date">
 <label for="finEnchere">Fin de l'enchère):</label>
 <input id="finEnchere" name="finEnchere" type="date">
-Retrait: <% utilisateur.getRue(); utilisateur.getCodePostal(); utilisateur.getVille(); %>
+Retrait: <%= utilisateur.getRue()%> <%=utilisateur.getCodePostal()%> <%=utilisateur.getVille() %>
 
 <input type="submit" value="Enregistrer">
 </form>

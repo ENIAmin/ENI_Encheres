@@ -1,8 +1,6 @@
 package org.eni.encheres.servlets;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,16 +70,22 @@ public class AjouterArticle extends HttpServlet {
 			Retrait retrait;
 			Article article;
 			utilisateur = utilisateurManager.getUtilisateurByPseudo(pseudo);
-			Date debutEnchere = new SimpleDateFormat("dd/MM/yyyy").parse(request.getAttribute("debutEnchere").toString());  
-			Date finEnchere = new SimpleDateFormat("dd/MM/yyyy").parse(request.getAttribute("finEnchere").toString()); 
-			article = new Article(utilisateur.getNoUtilisateur(), request.getAttribute("nomArticle").toString(), request.getAttribute("description").toString(), debutEnchere, finEnchere, Integer.parseInt((String) request.getAttribute("prixArticle")), Integer.parseInt((String) request.getAttribute("categorieArticle")));
+			//Date debutEnchere = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("debutEnchere").toString());  
+			//Date finEnchere = new SimpleDateFormat("dd/MM/yyyy").parse(request.getParameter("finEnchere").toString()); 
+			long miliseconds = System.currentTimeMillis();
+	        Date debutEnchere = new Date(miliseconds);
+	        Date finEnchere = new Date(miliseconds);
+			//Date debutEnchere = new Date();
+			//Date finEnchere = new Date();
+	        System.out.println(utilisateur.getNoUtilisateur());
+	        System.out.println(request.getParameter("nomArticle").toString());
+	        System.out.println(request.getParameter("descriptionArticle").toString());
+			article = new Article(utilisateur.getNoUtilisateur(), request.getParameter("nomArticle").toString(), request.getParameter("descriptionArticle").toString(), debutEnchere, finEnchere, Integer.parseInt((String) request.getParameter("prixArticle")), Integer.parseInt((String) request.getParameter("categorieArticle")));
 			articleManager.addArticle(article);
 			retrait = new Retrait(utilisateur.getRue(), utilisateur.getCodePostal(), utilisateur.getVille(), article.getNoArticle());
 			retraitManager.addRetrait(retrait);
 			request.getRequestDispatcher("/Accueil").forward(request, response);
 		} catch (BLLException e){
-			e.printStackTrace();
-		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}

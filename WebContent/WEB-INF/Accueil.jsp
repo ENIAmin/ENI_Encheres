@@ -1,27 +1,34 @@
 <%@ page import="org.eni.encheres.bo.Article" %>
+<%@ page import="org.eni.encheres.bo.Categorie" %>
 <%@ page import="java.util.List" %>
 <%@  page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%List<Article> listeArticles = (List<Article>) request.getAttribute("listeArticles"); %>
+<%List<Article> listeArticles = (List<Article>) request.getAttribute("listeArticles"); 
+List<Categorie> listeCategories = (List<Categorie>) request.getAttribute("listeCategories"); 
+%>
 <!DOCTYPE html>
 <html>
 </head>
 <body>
 	<h1>ENI-Enchères</h1>
-<%=session.getAttribute("pseudo")%>
-Welcome ${sessionScope.pseudo }
 
 
-	<a href="<%=request.getContextPath()%>/register">S'inscrire</a>
+	<a href="<%=request.getContextPath()%>/Inscription">S'inscrire</a>
 	</br>
+	
+	
+	<%if(session.getAttribute("pseudo") != null){ %>
+		<a href="<%=request.getContextPath()%>/Connexion">Se Déconnecter</a>
+		<a href="<%=request.getContextPath()%>/Ajout">Nouvelle Vente</a>
+	<%} else {%>
 	<a href="<%=request.getContextPath()%>/Connexion">Se connecter</a>
+	<%}%>
 	</br>
 	<h2>Filtres :</h2>
-	<select name="categorie" id="categorie">
-		<option value="">Toutes</option>
-		<option value="test">test</option>
-		<option value="wsh">wsh</option>
-		<option value="peeka">peeka</option>
+	<select name="categorie" id="categorie"><option value="all">Toutes</option>
+		<%for(Categorie categorie : listeCategories){ %>
+		<option value="<%=categorie.getNoCategorie() %>"><%=categorie.getLibelle() %></option>
+		<%} %>
 	</select>
 	</br>
 	<input placeholder="Le nom de l'article contient " type="search"

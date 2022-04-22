@@ -25,8 +25,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO{
 			pstmt = connection.prepareStatement("INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) VALUES (?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, article.getNomArticle());
 			pstmt.setString(2, article.getDescription());
-			pstmt.setDate(3, (Date) article.getDateDebutEncheres());
-			pstmt.setDate(4, (Date) article.getDateFinEncheres());
+			long miliseconds = System.currentTimeMillis();
+	        Date debutEnchere = new Date(miliseconds);
+	        Date finEnchere = new Date(miliseconds);
+			//pstmt.setDate(3, (Date) article.getDateDebutEncheres());
+			//pstmt.setDate(4, (Date) article.getDateFinEncheres());
+			pstmt.setDate(3, debutEnchere);
+			pstmt.setDate(4, finEnchere);
 			pstmt.setInt(5, article.getMiseAPrix());
 			pstmt.setInt(6, article.getNoUtilisateur());
 			pstmt.setInt(7, article.getNoCategorie());

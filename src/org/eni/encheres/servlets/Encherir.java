@@ -48,11 +48,14 @@ public class Encherir extends HttpServlet {
 				Enchere enchere;
 				utilisateur = utilisateurManager.getUtilisateurByPseudo(pseudo);
 				if(Integer.parseInt((String) request.getParameter("montant")) <= utilisateur.getCredit()) {
-					enchere = new Enchere(utilisateur.getNoUtilisateur(), Integer.parseInt((String) request.getAttribute("articleId")), LocalDateTime.now(), Integer.parseInt((String) request.getParameter("montant")));
-					enchereManager.removeEnchere(Integer.parseInt((String) request.getAttribute("articleId")));
+					enchere = new Enchere(utilisateur.getNoUtilisateur(), Integer.parseInt((String) request.getParameter("articleId")), LocalDateTime.now(), Integer.parseInt((String) request.getParameter("montant")));
+					System.out.println("Enchere a supprimer" + Integer.parseInt((String) request.getParameter("articleId")));
+					enchereManager.removeEnchere(Integer.parseInt((String) request.getParameter("articleId")));
 					enchereManager.addEnchere(enchere);
+					int credit = utilisateur.getCredit() - enchere.getMontantEnchere();
+					utilisateurManager.updateCredit(utilisateur.getNoUtilisateur(), credit);
 				}
-				request.setAttribute("article", Integer.parseInt((String) request.getAttribute("articleId")));
+				request.setAttribute("articleID", Integer.parseInt((String) request.getParameter("articleId")));
 				request.getRequestDispatcher("/Article").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Accueil").forward(request, response);

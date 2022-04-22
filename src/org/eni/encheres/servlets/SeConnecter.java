@@ -1,12 +1,17 @@
 package org.eni.encheres.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.eni.encheres.bll.BLLException;
+import org.eni.encheres.bll.UtilisateurManager;
+import org.eni.encheres.bo.Utilisateur;
 
 /**
  * Servlet implementation class SeConnecter
@@ -19,7 +24,13 @@ public class SeConnecter extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
+		HttpSession session = request.getSession();
+		if(session.getAttribute("pseudo") != null) {
+			session.removeAttribute("pseudo");
+			request.getRequestDispatcher("/Accueil").forward(request, response);
+		} else {
+			request.getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -27,12 +38,25 @@ public class SeConnecter extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String pseudo = request.getParameter("pseudo");
-        
+		String login = request.getParameter("login");
+		String password = request.getParameter("password");
         HttpSession session = request.getSession();
-
-        session.setAttribute("pseudo", pseudo);
-        request.getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+        UtilisateurManager utilisateurManager;
+        Utilisateur utilisateur;
+        try {
+        	utilisateurManager = new UtilisateurManager();
+			utilisateur = utilisateurManager.getUtilisateurByLogin(login, password);
+			if(utilisateur != null) {
+		        session.setAttribute("pseudo", utilisateur.getPseudo());
+		        request.getRequestDispatcher("/Accueil").forward(request, response);
+			} else {
+				request.getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
+			}
+		} catch (BLLException e) {
+			e.printStackTrace();
+		}
+        
+	        
 	}
 
 }
