@@ -47,16 +47,21 @@ public class ArticleDetails extends HttpServlet {
 			Enchere enchere;
 			Utilisateur acheteur, vendeur;
 			Retrait retrait;
+			System.out.println("id" + Integer.parseInt(request.getParameter("articleID")));
 			article = articleManager.getArticle(Integer.parseInt(request.getParameter("articleID")));
 			categorie = categorieManager.getCategorie(article.getNoCategorie());
 			enchere = enchereManager.getEnchereByArticle(article.getNoArticle());
-			acheteur = utilisateurManager.getUtilisateur(enchere.getNoUtilisateur());
+			if(enchere != null) {
+				acheteur = utilisateurManager.getUtilisateur(enchere.getNoUtilisateur());
+				request.setAttribute("acheteur", acheteur);
+			}
+			System.out.println(article.getNoUtilisateur());
 			vendeur = utilisateurManager.getUtilisateur(article.getNoUtilisateur());
 			retrait = retraitManager.getRetrait(article.getNoArticle());
 			request.setAttribute("article", article);
 			request.setAttribute("categorie", categorie);
 			request.setAttribute("enchere", enchere);
-			request.setAttribute("acheteur", acheteur);
+			
 			request.setAttribute("vendeur", vendeur);
 			request.setAttribute("retrait", retrait);
 			request.getRequestDispatcher("/WEB-INF/Article.jsp").forward(request, response);

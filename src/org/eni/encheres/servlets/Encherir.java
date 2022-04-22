@@ -37,18 +37,21 @@ public class Encherir extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String pseudo = (String) session.getAttribute("pseudo");
+		System.out.println(pseudo);
 		UtilisateurManager utilisateurManager;
 		EnchereManager enchereManager;
 		try {
-			if(request.getAttribute("montant") != null) {
+			if(request.getParameter("montant") != null) {
 				utilisateurManager = new UtilisateurManager();
 				enchereManager = new EnchereManager();
 				Utilisateur utilisateur;
 				Enchere enchere;
 				utilisateur = utilisateurManager.getUtilisateurByPseudo(pseudo);
-				enchere = new Enchere(utilisateur.getNoUtilisateur(), Integer.parseInt((String) request.getAttribute("articleId")), LocalDateTime.now(), Integer.parseInt((String) request.getAttribute("montant")));
-				enchereManager.removeEnchere(Integer.parseInt((String) request.getAttribute("articleId")));
-				enchereManager.addEnchere(enchere);
+				if(Integer.parseInt((String) request.getParameter("montant")) <= utilisateur.getCredit()) {
+					enchere = new Enchere(utilisateur.getNoUtilisateur(), Integer.parseInt((String) request.getAttribute("articleId")), LocalDateTime.now(), Integer.parseInt((String) request.getParameter("montant")));
+					enchereManager.removeEnchere(Integer.parseInt((String) request.getAttribute("articleId")));
+					enchereManager.addEnchere(enchere);
+				}
 				request.setAttribute("article", Integer.parseInt((String) request.getAttribute("articleId")));
 				request.getRequestDispatcher("/Article").forward(request, response);
 			} else {

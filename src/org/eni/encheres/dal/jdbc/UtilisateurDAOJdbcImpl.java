@@ -67,7 +67,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 		try {
 			connection = JDBCTools.getConnection();
-			String userDelete = "DELETE * FROM UTILISATEUR WHERE no_utilisateur=?";
+			String userDelete = "DELETE * FROM UTILISATEURS WHERE no_utilisateur=?";
 			pstmt = connection.prepareStatement(userDelete);
 			pstmt.setInt(1, id);
 			
@@ -132,14 +132,12 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 		try {
 			connection = JDBCTools.getConnection();
-			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEUR WHERE no_utilisateur=?");
+			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEURS WHERE no_utilisateur=?");
 			pstmt.setInt(1, id);
 			
-			ResultSet rs = pstmt.executeQuery();
-			
-			utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
-			
-			
+			ResultSet rs = pstmt.executeQuery();while(rs.next()) {
+				utilisateur = new Utilisateur(rs.getInt("no_utilisateur"), rs.getString("pseudo"), rs.getString("nom"), rs.getString("prenom"), rs.getString("email"), rs.getString("telephone"), rs.getString("rue"), rs.getString("code_postal"), rs.getString("ville"), rs.getString("mot_de_passe"), rs.getInt("credit"), rs.getBoolean("administrateur"));
+			}
 		} catch (SQLException e) {
 			throw new DALException("Erreur lors de la selection d'un utilisateur", e);
 		}finally {
@@ -174,7 +172,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 		try {
 			connection = JDBCTools.getConnection();
-			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEUR WHERE (pseudo = ? OR email = ?) AND mot_de_passe = ?");
+			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEURS WHERE (pseudo = ? OR email = ?) AND mot_de_passe = ?");
 			pstmt.setString(1, login);
 			pstmt.setString(2, login);
 			pstmt.setString(3, motDePasse);
@@ -208,7 +206,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 		try {
 			connection = JDBCTools.getConnection();
-			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEUR WHERE pseudo = ?");
+			pstmt = connection.prepareStatement("SELECT * FROM  UTILISATEURS WHERE pseudo = ?");
 			pstmt.setString(1, pseudo);
 			
 			ResultSet rs = pstmt.executeQuery();

@@ -22,21 +22,24 @@ Retrait retrait = (Retrait) request.getAttribute("retrait");
 <h1>ENI-Enchères</h1>
 <h2>Détail vente</h2>
 <div>
-<% article.getNomArticle(); %>
-Description: <% article.getDescription(); %>
-Catégorie: <% categorie.getLibelle(); %>
-Meilleure offre: <% if(enchere != null) {enchere.getMontantEnchere(); %> pts par <% acheteur.getPseudo(); }%>
-Mise à prix: <% article.getMiseAPrix(); %> points
-Fin de l'enchère: <% article.getDateFinEncheres(); %>
-Retrait: <% retrait.getRue(); retrait.getCodePostal(); retrait.getVille(); %>
-Vendeur: <% vendeur.getPseudo(); %>
+Article: <%= article.getNomArticle() %></br>
+Description: <%= article.getDescription() %></br>
+Catégorie: <%= categorie.getLibelle() %></br>
+Meilleure offre: <% if(enchere != null) {%><%= enchere.getMontantEnchere()%> pts par <%= acheteur.getPseudo() %> <% } %></br>
+Mise à prix: <%= article.getMiseAPrix() %> points</br>
+Fin de l'enchère: <%= article.getDateFinEncheres() %></br>
+Retrait: <%= retrait.getRue()%> <%= retrait.getCodePostal()%> <%=retrait.getVille() %></br>
+Vendeur: <%= vendeur.getPseudo() %></br>
 </div>
 <form action="<%=request.getContextPath()%>/Enchere" method="POST">
 <input type="hidden" id="articleId" name="articleId" value="<%= article.getNoArticle()%>">
-Ma proposition: <select id="montant" name="montant"><%for(int i = enchere.getMontantEnchere() +5; i<800; i = i+5){
+Ma proposition: <select id="montant" name="montant"><%if(enchere!= null){for(int i = enchere.getMontantEnchere() +5; i<800; i = i+5){
 	%><option value="<%=i%>"><%=i%></option>
-	<%}%></select>
-}
+	<%}} else {
+		for(int i = article.getMiseAPrix() ; i<800; i = i+5){
+			%><option value="<%=i%>"><%=i%></option>
+			<%}
+	}%></select>
 <input type="submit" value="Enchérir">
 </form>
 
